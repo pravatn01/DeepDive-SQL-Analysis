@@ -1,0 +1,7 @@
+product_id,product_name,brand,category,procurement_cost_per_unit,mrp
+12345,HP XYZ Mouse,HP,mouse,650,1500
+12346,HP 241H,HP,laptop,45000,80000
+12347,HP 8GB Pendrive,HP,pendrive,350,800
+12348,Dell ABC Mouse,Dell,mouse,350,1100
+12349,Dell AX420,Dell,laptop,30000,75000
+12350,Dell 8GB Pendrive,Dell,pendrive,250,850
