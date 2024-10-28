@@ -62,7 +62,7 @@ select * from order_dim
 select * from pincode_dim
 select * from product_dim
 
-	
+
 -- 1.How many customers do not have DOB information available ?
 
 
@@ -70,11 +70,11 @@ select count(*) as result
 from customer_dim
 where dob is null
 
- 
+
 -- 2.How many customers are there in each pincode and gender combination ?
 
 
-select primary_pincode, gender,count(cust_id) 
+select primary_pincode, gender,count(cust_id)
 from customer_dim
 group by primary_pincode, gender
 
@@ -100,7 +100,7 @@ group by pincode
 -- paid by 'cash'. Take only 'buy' order types ?
 
 
-select delivery_pincode,  
+select delivery_pincode,
 	count(order_id),
 	sum(total_amount_paid),
 	avg(total_amount_paid),
@@ -166,8 +166,8 @@ from order_dim
 
 select month, total_orders, total_returns,
 		case
-		when total_buys = 0 then null					--case statement is unnecessary here since none of the total_buys value is zero 
-		else (100.0 * total_returns) / total_buys 		
+		when total_buys = 0 then null					--case statement is unnecessary here since none of the total_buys value is zero
+		else (100.0 * total_returns) / total_buys
 		end as return_rate
 
 from
@@ -197,7 +197,7 @@ group by 1
 
 
 select p.state as state,
-		count(distinct(c.cust_id)) as customers_count, 
+		count(distinct(c.cust_id)) as customers_count,
 		count(distinct(d.delivery_person_id)) as deliveryboys_count
 from customer_dim as c
 join pincode_dim as p on c.primary_pincode = p.pincode
@@ -217,8 +217,8 @@ select c.cust_id,
 		sum(o.tot_units) AS total_units,
 		sum(case when c.primary_pincode=o.delivery_pincode then o.tot_units else 0 end) as primary_units,
 		sum(case when  c.primary_pincode <> o.delivery_pincode  then o.tot_units else 0 end) as nonprimary_units,
-		(100.0 * sum(case when o.delivery_pincode = c.primary_pincode then o.tot_units else 0 end) / 					sum(o.tot_units)) as percentage
-from customer_dim as c 
+		(100.0 * sum(case when o.delivery_pincode = c.primary_pincode then o.tot_units else 0 end) / sum(o.tot_units)) as percentage
+from customer_dim as c
 join order_dim as o on c.cust_id = o.cust_id
 group by c.cust_id order by percentage desc;
 
@@ -265,7 +265,8 @@ order by net_discount_on_sp desc
 
 
 select p.category as category,
-		sum(o.total_amount_paid) - sum(o.tot_units * p.procurement_cost_per_unit) as absolute_profit,					100.0 * sum(o.total_amount_paid) / sum(o.tot_units * p.procurement_cost_per_unit) - 100.0 AS percentage_profit
+		sum(o.total_amount_paid) - sum(o.tot_units * p.procurement_cost_per_unit) as absolute_profit,
+        100.0 * sum(o.total_amount_paid) / sum(o.tot_units * p.procurement_cost_per_unit) - 100.0 AS percentage_profit
 from order_dim as o
 join product_dim as p  on p.product_id = o.product_id
 where o.order_type like 'buy'
@@ -303,7 +304,8 @@ group by d.delivery_person_id
 
 
 select c.gender as gender,
-		sum(o.total_amount_paid) - sum(o.tot_units * p.procurement_cost_per_unit) as absolute_profit,					100.0 * sum(o.total_amount_paid) / sum(o.tot_units * p.procurement_cost_per_unit) - 100.0 AS percentage_profit
+		sum(o.total_amount_paid) - sum(o.tot_units * p.procurement_cost_per_unit) as absolute_profit,
+        100.0 * sum(o.total_amount_paid) / sum(o.tot_units * p.procurement_cost_per_unit) - 100.0 AS percentage_profit
 from order_dim as o
 join product_dim as p  on p.product_id = o.product_id
 join customer_dim as c on c.cust_id = o.cust_id
@@ -318,10 +320,10 @@ order by absolute_profit desc
 
 select o.tot_units as total_units,
 avg(o.displayed_selling_price_per_unit - o.total_amount_paid / tot_units) as avg_discount
-from order_dim as o 
+from order_dim as o
 inner join product_dim as p on o.product_id = p.product_id
 where product_name like 'Dell AX420' and order_type like 'buy'
-group by total_units 
+group by total_units
 order by avg_discount desc;
 
 
